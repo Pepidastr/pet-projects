@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Music Player</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center; /* Выравнивание по центру */
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .controls {
+            margin-bottom: 20px; /* Отступ для кнопок над плеером */
+        }
+
+        audio {
+            width: 50%; /* Уменьшаем ширину плеера в два раза */
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="playerTitle">Music Player</h1>
+    <div class="controls">
+        <!-- Блок с кнопками -->
+        <button onclick="playPrevious()">Previous</button>
+        <button onclick="playNext()">Next</button>
+    </div>
+    <audio id="audioPlayer" controls>
+        <!-- Сам плеер -->
+        <source id="audioSource" src="" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        let currentTrackIndex = 0; // Текущий индекс трека
+        const trackCount = {{.TrackCount}}; // Количество треков (передается из сервера)
+        const tracks = {{.Tracks}}; // Массив треков, переданный сервером
+
+        // Функция для изменения заголовка
+        function updateTitle(index) {
+            const titleElement = document.getElementById("playerTitle");
+            titleElement.innerText = "Playing: " + tracks[index];
+        }
+
+        // Функция для воспроизведения трека по индексу
+        function playTrack(index) {
+            const audioPlayer = document.getElementById("audioPlayer");
+            const audioSource = document.getElementById("audioSource");
+            audioSource.src = "/music?index=" + index;
+            audioPlayer.load(); 
+            updateTitle(index); 
+            audioPlayer.play(); 
+        }
+
+        function playNext() {
+            currentTrackIndex = (currentTrackIndex + 1) % trackCount; // Зацикливание
+            playTrack(currentTrackIndex);
+        }
+
+        function playPrevious() {
+            currentTrackIndex = (currentTrackIndex - 1 + trackCount) % trackCount; // Зацикливание
+            playTrack(currentTrackIndex);
+        }
+
+        playTrack(currentTrackIndex);
+    </script>
+</body>
+</html></html></html>
